@@ -1,0 +1,66 @@
+trigger:
+ branches:
+   include:
+     - main
+pr:
+ branches:
+   include:
+     - main
+pool:
+  name: skyline-agent
+
+stages:
+- stage:
+  jobs:
+  - job:
+    displayName: Tearrform init and validate
+    steps:
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/UAT'
+        backendServiceArm: 'test-svc'
+        backendAzureRmResourceGroupName: 'test-rg'
+        backendAzureRmStorageAccountName: 'teststrg678'
+        backendAzureRmContainerName: 'test-container'
+        backendAzureRmKey: 'test.tfstate'
+    - task: TerraformTask@5
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/UAT'
+        environmentServiceNameAzureRM: 'test-svc'
+- stage: 
+  pool: server
+  jobs:
+    - job:
+      displayName: mai chala raha hu manual validation
+      steps:
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: 'sanjaytanwar450@gmail.com'
+          approvers: 'sanjaytanwar450@gmail.com'
+          instructions: 'Approve kar do bhai'
+
+- stage: 
+  jobs:
+    - job: 
+      displayName: finally apply kar do
+      steps:
+      - task: TerraformTask@5
+        inputs:
+         provider: 'azurerm'
+         command: 'init'
+         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/UAT'
+         backendServiceArm: 'test-svc'
+         backendAzureRmResourceGroupName: 'test-rg'
+         backendAzureRmStorageAccountName: 'teststrg678'
+         backendAzureRmContainerName: 'test-container'
+         backendAzureRmKey: 'test.tfstate'
+      - task: TerraformTask@5
+        inputs:
+          provider: 'azurerm'
+          command: 'apply'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/UAT'
+          environmentServiceNameAzureRM: 'test-svc'
