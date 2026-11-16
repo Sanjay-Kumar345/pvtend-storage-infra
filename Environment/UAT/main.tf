@@ -1,6 +1,6 @@
-module "resource-group-name" {
-    source = "../../Modules/azurerm-resource-group"
-   rg-name = var.rg-name
-}
-
+module "resoure-azure" {
+  source = "../../Modules/azurerm-resource-group"
+  rg-name = var.rg-name
+    
+  }
 
