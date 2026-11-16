@@ -31,6 +31,7 @@ stages:
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/UAT'
         environmentServiceNameAzureRM: 'test-svc'
+        commandOptions: '-input=false'
 - stage: 
   pool: server
   jobs:
@@ -64,3 +65,4 @@ stages:
           command: 'apply'
           workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/UAT'
           environmentServiceNameAzureRM: 'test-svc'
+          commandOptions: '-input=false'

@@ -1,3 +1,6 @@
 output "resource-group" {
-  value = azurerm_resource_group.rgs.name
+  value = {
+    for key, rg in azurerm_resource_group.rgs :
+    key => rg.name
+  }
 }
