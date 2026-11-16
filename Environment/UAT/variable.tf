@@ -19,17 +19,9 @@ variable "vnet-name" {
   
 }
 
-variable "subnet-name" {
-    description = "Name of the subnet"
-    type        = map(object({
-        name = string
-        resource_group_name = string
-        virtual_network_name = string
-        location = string
-        address_prefixes = list(string)
-    }))
+
   
-}
+
 
 variable "strg-name" {
   description = "Name of the storage account"
