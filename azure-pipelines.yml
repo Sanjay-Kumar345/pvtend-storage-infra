@@ -32,6 +32,37 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/UAT'
         environmentServiceNameAzureRM: 'test-svc'
         commandOptions: '-input=false'
+- stage: scanstage
+  displayName: run kargea tfsec or tflint 
+  jobs:
+  - job: tfsec
+    displayName: run tfsec
+    steps:
+    - checkout: self
+
+    # tfsec Security Scan
+    - script: |
+        echo "===== tfsec Version ====="
+        tfsec --version
+
+        echo "===== Starting tfsec Scan ====="
+        tfsec "$(Build.SourcesDirectory)"
+      displayName: tfsec Security Scan
+      continueOnError: true
+      # TFLint Code Quality Scan
+    - script: |
+        echo "===== TFLint Version ====="
+        tflint --version
+
+        echo "===== TFLint Initialization ====="
+        cd "$(Build.SourcesDirectory)"
+        tflint --init
+
+        echo "===== Starting TFLint Scan ====="
+        tflint --recursive
+      displayName: TFLint Code Quality Scan
+      continueOnError: true
+
 - stage: 
   pool: server
   jobs:
