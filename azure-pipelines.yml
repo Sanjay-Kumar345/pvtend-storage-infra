@@ -94,10 +94,9 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'apply'
-          commandOptions: 'auto-approve'
           workingDirectory: '$(System.DefaultWorkingDirectory)/Environment/UAT'
+          commandOptions: '-auto-approve'
           environmentServiceNameAzureRM: 'test-svc'
-          commandOptions: '-input=false'
 
 
 ## adding 
